@@ -18,73 +18,73 @@ const knownVulnerabilities = [
 
 
 // Real network scan using Nmap
-// const realNetworkScan = async (scanId, target, scanType) => {
-//   const scan = global.scans.find((s) => s.id === scanId);
-//   if (!scan) return;
+const realNetworkScan = async (scanId, target, scanType) => {
+  const scan = global.scans.find((s) => s.id === scanId);
+  if (!scan) return;
 
-//   try {
-//     scan.status = "running";
-//     scan.currentStep = "Running Nmap scan...";
-//     scan.progress = 10;
+  try {
+    scan.status = "running";
+    scan.currentStep = "Running Nmap scan...";
+    scan.progress = 10;
 
-//     // Nmap options
-//     const options = {
-//       ports: scanType === "comprehensive" ? "1-65535" : "1-1000",
-//       flags: ["-sV"], // Service/version detection
-//     };
+    // Nmap options
+    const options = {
+      ports: scanType === "comprehensive" ? "1-65535" : "1-1000",
+      flags: ["-sV"], // Service/version detection
+    };
 
-//     const nmapScan = new Nmap.NmapScan(target, options.ports, options.flags);
+    const nmapScan = new Nmap.NmapScan(target, options.ports, options.flags);
 
-//     nmapScan.on('complete', function(data) {
-//       scan.currentStep = "Analyzing scan results...";
-//       scan.progress = 80;
+    nmapScan.on('complete', function(data) {
+      scan.currentStep = "Analyzing scan results...";
+      scan.progress = 80;
 
-//       // Map Nmap results to vulnerabilities
-//       const vulnerabilities = [];
-//       data.forEach(host => {
-//         host.openPorts.forEach(portInfo => {
-//           const match = knownVulnerabilities.find(v =>
-//             v.port === portInfo.port && portInfo.service && portInfo.service.includes(v.service)
-//           );
-//           if (match) {
-//             vulnerabilities.push({
-//               ...match,
-//               id: uuidv4(),
-//               target: target,
-//               discoveredAt: new Date().toISOString(),
-//               scanType: scanType,
-//               port: portInfo.port,
-//               service: portInfo.service,
-//               cve: match.cve || "",
-//             });
-//           }
-//         });
-//       });
+      // Map Nmap results to vulnerabilities
+      const vulnerabilities = [];
+      data.forEach(host => {
+        host.openPorts.forEach(portInfo => {
+          const match = knownVulnerabilities.find(v =>
+            v.port === portInfo.port && portInfo.service && portInfo.service.includes(v.service)
+          );
+          if (match) {
+            vulnerabilities.push({
+              ...match,
+              id: uuidv4(),
+              target: target,
+              discoveredAt: new Date().toISOString(),
+              scanType: scanType,
+              port: portInfo.port,
+              service: portInfo.service,
+              cve: match.cve || "",
+            });
+          }
+        });
+      });
 
-//       scan.vulnerabilities = vulnerabilities;
-//       scan.status = "completed";
-//       scan.completedAt = new Date().toISOString();
-//       scan.currentStep = "Scan completed successfully";
-//       scan.duration = Math.floor((new Date() - new Date(scan.createdAt)) / 1000);
+      scan.vulnerabilities = vulnerabilities;
+      scan.status = "completed";
+      scan.completedAt = new Date().toISOString();
+      scan.currentStep = "Scan completed successfully";
+      scan.duration = Math.floor((new Date() - new Date(scan.createdAt)) / 1000);
 
-//       console.log(`✅ Real scan ${scanId} completed with ${vulnerabilities.length} vulnerabilities found`);
-//     });
+      console.log(`✅ Real scan ${scanId} completed with ${vulnerabilities.length} vulnerabilities found`);
+    });
 
-//     nmapScan.on('error', function(error) {
-//       scan.status = "failed";
-//       scan.error = error.message;
-//       scan.currentStep = "Scan failed";
-//       console.error(`❌ Real scan ${scanId} failed:`, error);
-//     });
+    nmapScan.on('error', function(error) {
+      scan.status = "failed";
+      scan.error = error.message;
+      scan.currentStep = "Scan failed";
+      console.error(`❌ Real scan ${scanId} failed:`, error);
+    });
 
-//     nmapScan.startScan();
-//   } catch (error) {
-//     scan.status = "failed";
-//     scan.error = error.message;
-//     scan.currentStep = "Scan failed";
-//     console.error(`❌ Real scan ${scanId} failed:`, error);
-//   }
-// };
+    nmapScan.startScan();
+  } catch (error) {
+    scan.status = "failed";
+    scan.error = error.message;
+    scan.currentStep = "Scan failed";
+    console.error(`❌ Real scan ${scanId} failed:`, error);
+  }
+};
 
 
 //Mock vulnerability database
