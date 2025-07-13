@@ -397,34 +397,4 @@ We welcome contributions! Please follow these steps:
 
 ---
 
-## License
-
-This project is proprietary and intended for internal use only . All rights reserved.
-
----
-
-## Acknowledgements
-
-- [React](https://react.dev/)
-- [Vite](https://vitejs.dev/)
-- [Tailwind CSS](https://tailwindcss.com/)
-- [Jest](https://jestjs.io/)
-- [Netlify](https://www.netlify.com/)
-- [Vercel](https://vercel.com/)
-
----
-
-## Additional Resources
-
-- [Frontend Documentation](https://your-org-docs.com/frontend)
-- [API Reference](https://your-org-docs.com/api)
-- [Security Guidelines](https://your-org-docs.com/security)
-
----
-
-## Contact
-
-For support or questions, contact the development team at `security-dev@socgen.com`.
-
----
 
